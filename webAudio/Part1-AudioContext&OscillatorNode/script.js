@@ -20,6 +20,7 @@ osc.start();
 var startAudio = document.getElementById('audioStart');
 var endAudio = document.getElementById('audioEnd');
 
+// start/stop audio functions
 startAudio.onclick = function() {
   audioCtx.resume();
 }
@@ -42,8 +43,10 @@ function stopRandom() {
   window.clearInterval(interval);
 }
 
-// create click handlers for randomizers
+// grab buttons
 var startRandomButton = document.getElementById('startRandomFrequency');
-startRandomButton.onclick = startRandom;
 var stopRandomButton = document.getElementById('endRandomFrequency');
+
+// assign click handlers for the randomizer buttons
+startRandomButton.onclick = startRandom;
 stopRandomButton.onclick = stopRandom;
