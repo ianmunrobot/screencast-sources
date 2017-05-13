@@ -9,36 +9,41 @@ var osc = audioCtx.createOscillator();
 // To use it, we should set its properties:
 // waveshape: triangle wave
 // https://en.wikipedia.org/wiki/Triangle_wave
+// The values for `osc.type` can be 'sine', 'triangle', 'square', or 'sawtooth'
 osc.type = 'triangle';
-// frequency (in Hz):
+// starting frequency (in Hz):
 osc.frequency.value = 200;
-// we must connect its output to the context output
+// we must connect its output to the context output - main computer output (speakers, headphone port) by default
 osc.connect(audioCtx.destination);
+// begin the oscillator
 osc.start();
 
-// create start/stop button handlers
+// grab start/stop buttons
 var startAudio = document.getElementById('audioStart');
 var endAudio = document.getElementById('audioEnd');
 
-// start/stop audio functions
+// start audio function
 startAudio.onclick = function() {
   audioCtx.resume();
 }
 
+// pause audio function
 endAudio.onclick = function() {
   audioCtx.suspend();
 }
 
-// set up a couple simple randomizers
+// set up a simple pitch randomizers
 var interval;
 function startRandom () {
   interval = window.setInterval(function() {
+    // create a new frequency between 200 and 600
     var newFrequency = Math.random() * 400 + 200;
     console.log('new frequency:', newFrequency);
     osc.frequency.value = newFrequency;
-  }, 400);
+  }, 500);
 }
 
+// clear the interval creating new random frequencies
 function stopRandom() {
   window.clearInterval(interval);
 }
