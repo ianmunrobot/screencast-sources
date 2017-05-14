@@ -72,6 +72,6 @@ We take a pitch name and calculate its key number by multiplying its octave base
 By composing these two functions, we can return a frequency value for any pitch name:
 
 ```js
-frequencyFromKeyNum(keyNumFromName('A5)) // => 440
+frequencyFromKeyNum(keyNumFromName('A5')) // => 440
 ```
 
