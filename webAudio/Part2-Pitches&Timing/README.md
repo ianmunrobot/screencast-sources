@@ -1,5 +1,7 @@
 # Web Audio - dealing with musical pitch and timing
 
+The screencast for this repo can be found here: https://scrimba.com/casts/cast-2108
+
 Let's talk briefly about the relationship between `frequency` - an absolute measurement of vibration, and `pitch` - a more perceptive/musical phenomenon. If we want to be able to describe melodies in musical terms we might be more familiar with such as note names, we'll need to be able to convert between these two measurement systems.
 
 [More info about the relationship between these terms](http://www.physicsclassroom.com/class/sound/Lesson-2/Pitch-and-Frequency)
@@ -8,11 +10,11 @@ Let's talk briefly about the relationship between `frequency` - an absolute meas
 
 ![piano keyboard](https://upload.wikimedia.org/wikipedia/en/thumb/3/3f/Octave_Designations_4.svg/1280px-Octave_Designations_4.svg.png)
 
-A typical piano has 88 keys, labeled by pitch name and octave designation above. For the non-musician, octaves can be thought of as the total range of a single scale (think do-re-mi-fa-sol-la-ti-do). The relationship between `frequency`, which the Web Audio API uses to output oscillator sound, and musical `pitch`, as we humans recognize it, can be a bit confusing. It all comes down to ratios:
+A typical piano has 88 keys, labeled by pitch name and octave designation above. For the non-musician, octaves can be thought of as the total range of a single scale (think do-re-mi-fa-sol-la-ti-do). The relationship between `frequency`, which the Web Audio API uses to output oscillator sound, and musical `pitch`, as we humans recognize it, can be a bit confusing. It all comes down to ratios.
 
-Rising in pitch by one octave results in the frequency (measured in cycles per second or Hertz (Hz)) doubling. So if the pitch `A4` is vibrating at `440 Hz`, rising by one octave would result in `880Hz`, and dropping by one octave would be `220Hz`. To human ears, these distances sound the same because our pitch perception is logarithmic, not linear.
+We'll use the Acoustical Society of America octave classification system as illustrated in the image above. Rising in pitch by one octave results in the frequency (measured in cycles per second or Hertz (Hz)) doubling. So if the pitch `A4` is vibrating at `440 Hz`, rising by one octave would result in `880Hz`, and dropping by one octave would be `220Hz`. To human ears, these distances sound the same because our pitch perception is logarithmic, not linear.
 
-In Western music, we most often use a system of tuning called Equal Temperament, meaning that individual half-steps or semitones (think going up from one key to the next adjacent key) is 1/12 of the distance between one octave and the next. We base these relationships on one central tuning note - the most common is considering `A5` on the keyboard to be `440Hz` and making all calculations from there. In this repo, we have a couple functions helping us get these calculations correctly. We generally refer to this tone an tuning system as `A440`
+In Western music, we most often use a system of tuning called Equal Temperament, meaning that individual half-steps or semitones (think going up from one key to the next adjacent key) is 1/12 of the distance between one octave and the next. We base these relationships on one central tuning note - the most common is considering `A4` on the keyboard to be `440Hz` and making all calculations from there. In this repo, we have a couple functions helping us get these calculations correctly. We generally refer to this tone an tuning system as `A440`
 
 ```js
 var frequencyFromKeyNum = function(keyNum) {
@@ -75,3 +77,24 @@ By composing these two functions, we can return a frequency value for any pitch 
 frequencyFromKeyNum(keyNumFromName('A5')) // => 440
 ```
 
+Check out the [Starting Point](startingpoint.html) to see this in action
+
+## Timing
+
+To schedule timing, we can call the `start` and `stop` methods of the `OscillatorNode` with arguments.
+
+The first argument of `start` is a time in seconds at which to being playing the oscillator. We can use the `AudioContext`'s `.currentTime` property to start something instantly (which is also the default behavior), or provide an offset to start things in the future.
+
+The first argumetn of `stop` is also a time to stop the playing. A common pattern is to set the duration based upon the time that the `start` method was directed to begin.
+
+ex:
+```js
+var context = new AudioContext();
+var osc = context.createOscillator();
+// create a time 1 second in the future
+var startTime = context.currentTime + 1;
+// begin the oscillator at that time
+osc.start(startTime);
+// end the oscillator 1.5 seconds after it starts
+osc.stop(startTime + 1.5)
+```

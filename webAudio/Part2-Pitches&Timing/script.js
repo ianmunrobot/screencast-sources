@@ -28,9 +28,9 @@ majorScaleButton.onclick = playScale;
 minorScaleButton.onclick = playScale;
 
 // event handler for play scale buttons
-function playScale(e) {
+function playScale(event) {
   // extract the 'name' property from the clicked button
-  var scaleType = e.target.name;
+  var scaleType = event.target.name;
   // choose the current scale
   var currentScale = scaleType === 'major' ? majorScale : minorScale;
   // Create oscillator/playtime for each sucessive note in the scale
@@ -41,6 +41,7 @@ function playScale(e) {
 }
 
 // Play a tone at a specified frequency for the 'scaleSpeed' length
+// For a more dynamic version, we might want to create a third 'length' argument so that it is more reusable
 function playTone(freq, time) {
   var osc = audioCtx.createOscillator();
   osc.type = 'triangle';
