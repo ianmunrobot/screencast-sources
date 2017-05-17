@@ -49,6 +49,9 @@ var keyDict = {
   '112': 'D#4',
   '59': 'E4'
 }
+
 document.onkeypress = function(e) {
-  osc.frequency.value = frequencyFromKeyNum(keyNumFromName(keyDict[e.keyCode]));
+  var keyCode = keyDict[e.keyCode]
+  if (!keyCode) return;
+  osc.frequency.setValueAtTime(frequencyFromKeyNum(keyNumFromName(keyCode)), 0);
 }
